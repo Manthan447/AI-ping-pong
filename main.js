@@ -12,6 +12,8 @@ var paddle1Y;
 var  playerscore =0;
 var audio1;
 var pcscore =0;
+
+ 
 //ball x and y and speedx speed y and radius
 var ball = {
     x:350/2,
@@ -57,6 +59,7 @@ function draw(){
     //pc computer paddle
     fill("#FFA500");
     stroke("#FFA500");
+    circle(RightWrist_x , RightWrist_y, 3)
    var paddle2y =ball.y-paddle2Height/2;  rect(paddle2Y,paddle2y,paddle2,paddle2Height,100);
     
     //function midline call
@@ -70,6 +73,10 @@ function draw(){
    
    //function move call which in very important
     move();
+
+  fill("#FF0000")
+  stroke("FF0000")
+  
 }
 
 function ModelLoaded(){
@@ -78,10 +85,13 @@ function ModelLoaded(){
 
 function gotPoses(results){
 	if(results.length > 0){
-		nose_x = results[0].pose.nose.x;
-		nose_y = results[0].pose.nose.y;
+		console.log(results);
+		RightWrist_x = results[0].pose.rightWrist.x;
+		RightWrist_y = results[0].pose.rightWrist.y;
+		console.log("nose_x = " + nose_x + "nose_y = " + nose_y);
 	}
 }
+
 
 
 
