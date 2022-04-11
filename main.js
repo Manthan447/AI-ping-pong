@@ -44,6 +44,9 @@ function draw(){
  fill("black");
  stroke("black");
  rect(0,0,20,700);
+
+fill("red")
+ circle(leftwrist_x,leftwrist_y,20);
  
    //funtion paddleInCanvas call 
    paddleInCanvas();
@@ -57,9 +60,7 @@ function draw(){
    
    
     //pc computer paddle
-    fill("#FFA500");
-    stroke("#FFA500");
-    circle(RightWrist_x , RightWrist_y, 3)
+    
    var paddle2y =ball.y-paddle2Height/2;  rect(paddle2Y,paddle2y,paddle2,paddle2Height,100);
     
     //function midline call
