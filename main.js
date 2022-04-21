@@ -1,6 +1,12 @@
 
 /*created by prashant shukla */
 
+RightWrist_x = 0;
+RightWrist_y = 0;
+
+game_status = "";
+score_rightwrist = 0;
+
 var paddle2 =10,paddle1=10;
 
 var paddle1X = 10,paddle1Height = 110;
@@ -8,7 +14,6 @@ var paddle2Y = 685,paddle2Height = 70;
 
 var score1 = 0, score2 =0;
 var paddle1Y;
-
 var  playerscore =0;
 var audio1;
 var pcscore =0;
@@ -23,6 +28,11 @@ var ball = {
     dy:3
 }
 
+function preload(){
+  missed = loadSound("missed.wav");
+  touching = loadSound("ball_touch_paddel.wav");
+}
+
 function setup(){
   var canvas =  createCanvas(700,600);
 	video = createCapture(VIDEO);
@@ -35,8 +45,9 @@ function setup(){
 
 function draw(){
 
- background(0); 
-
+ 
+ if(game_status == "start"){
+  background(0); 
  fill("black");
  stroke("black");
  rect(680,0,20,700);
@@ -44,10 +55,12 @@ function draw(){
  fill("black");
  stroke("black");
  rect(0,0,20,700);
-
+if(score_rightwrist > 0.2){
 fill("red")
- circle(leftwrist_x,leftwrist_y,20);
- 
+stroke("red")
+ circle(RightWrist_x,RightWrist_y,30);
+
+ }
    //funtion paddleInCanvas call 
    paddleInCanvas();
  
@@ -55,14 +68,16 @@ fill("red")
    fill(250,0,0);
     stroke(0,0,250);
     strokeWeight(0.5);
-   paddle1Y = mouseY; 
+   paddle1Y = RightWrist_y; 
    rect(paddle1X,paddle1Y,paddle1,paddle1Height,100);
    
    
+   fill("red");
+   stroke("red");
+
     //pc computer paddle
     
    var paddle2y =ball.y-paddle2Height/2;  rect(paddle2Y,paddle2y,paddle2,paddle2Height,100);
-    
     //function midline call
     midline();
     
@@ -75,8 +90,7 @@ fill("red")
    //function move call which in very important
     move();
 
-  fill("#FF0000")
-  stroke("FF0000")
+}
   
 }
 
@@ -89,7 +103,7 @@ function gotPoses(results){
 		console.log(results);
 		RightWrist_x = results[0].pose.rightWrist.x;
 		RightWrist_y = results[0].pose.rightWrist.y;
-		console.log("nose_x = " + nose_x + "nose_y = " + nose_y);
+		console.log("rightwrist_x " + RightWrist_x + "rightwrist_y " + RightWrist_y);
 	}
 }
 
@@ -145,11 +159,13 @@ function move(){
   if (ball.x-2.5*ball.r/2< 0){
   if (ball.y >= paddle1Y&& ball.y <= paddle1Y + paddle1Height) {
     ball.dx = -ball.dx+0.5; 
+    touching.play();
   }
   else{
     pcscore++;
     reset();
     navigator.vibrate(100);
+    missed.play();
   }
 }
 if(pcscore ==4){
@@ -189,4 +205,10 @@ function paddleInCanvas(){
   if(mouseY < 0){
     mouseY =0;
   }  
+}
+
+function StartGame(){
+  game_status = "start";
+  if(StartGame == true)
+  document.getElementById("Status").innerHTML = "Game is Starting";
 }
